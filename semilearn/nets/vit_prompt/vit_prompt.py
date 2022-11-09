@@ -167,7 +167,7 @@ class PromptedVisionTransformer(nn.Module):
         """
         super().__init__()
         assert global_pool in ('', 'avg', 'token')
-        norm_layer = norm_layer or partial(nn.LayerNorm, eps=1e-6)
+        norm_layer = norm_layer or partial(nn.LayerNorm, eps=1e-6) 
         act_layer = act_layer or nn.GELU
 
         self.num_classes = num_classes
@@ -179,10 +179,10 @@ class PromptedVisionTransformer(nn.Module):
         # Prompt and prompt projection
         self.num_prompt_tokens = 5
         self.prompt_dim = embed_dim
-        self.prompt_proj = nn.Identity()
+        self.prompt_proj = nn.Identity() # train
 
         val = math.sqrt(6. / float(3 * reduce(mul, _pair(patch_size), 1) + self.prompt_dim))
-        self.prompt_embeddings = nn.Parameter(torch.zeros(1, self.num_prompt_tokens, self.prompt_dim))
+        self.prompt_embeddings = nn.Parameter(torch.zeros(1, self.num_prompt_tokens, self.prompt_dim)) # train
         nn.init.uniform_(self.prompt_embeddings.data, -val, val)
 
         # embeddings
@@ -207,6 +207,43 @@ class PromptedVisionTransformer(nn.Module):
         self.fc_norm = norm_layer(embed_dim) if use_fc_norm else nn.Identity()
         self.num_features = self.embed_dim
         self.head = nn.Linear(self.embed_dim, num_classes) if num_classes > 0 else nn.Identity()
+
+
+    def train(self, mode):
+        if mode:
+            self.prompt_proj.train()
+            self.patch_embed.eval()
+            self.pos_drop.eval()
+            self.blocks.eval()
+            self.norm.eval()
+            self.fc_norm.train()
+            self.head.train()
+
+            # print("MODE: In train")
+            # print(self.prompt_proj.training)
+            # print(self.patch_embed.training)
+            # print(self.pos_drop.training)
+            # print(self.blocks.training)
+            # print(self.norm.training)
+            # print(self.fc_norm.training)
+            # print(self.head.training)
+        else:
+            self.prompt_proj.eval()
+            self.patch_embed.eval()
+            self.pos_drop.eval()
+            self.blocks.eval()
+            self.norm.eval()
+            self.fc_norm.eval()
+            self.head.eval()
+            
+            # print("MODE: In eval")
+            # print(self.prompt_proj.training)
+            # print(self.patch_embed.training)
+            # print(self.pos_drop.training)
+            # print(self.blocks.training)
+            # print(self.norm.training)
+            # print(self.fc_norm.training)
+            # print(self.head.training)
 
     def extract(self, x):
         B = x.shape[0]
