@@ -208,42 +208,50 @@ class PromptedVisionTransformer(nn.Module):
         self.num_features = self.embed_dim
         self.head = nn.Linear(self.embed_dim, num_classes) if num_classes > 0 else nn.Identity()
 
+        self.set_requires_grad_false(self.patch_embed)
+        self.set_requires_grad_false(self.pos_drop)
+        self.set_requires_grad_false(self.blocks)
+        self.set_requires_grad_false(self.norm)    
 
-    def train(self, mode):
-        if mode:
-            self.prompt_proj.train()
-            self.patch_embed.eval()
-            self.pos_drop.eval()
-            self.blocks.eval()
-            self.norm.eval()
-            self.fc_norm.train()
-            self.head.train()
+    def set_requires_grad_false(self, layer):
+        for param in layer.parameters():
+            param.requires_grad = False
 
-            # print("MODE: In train")
-            # print(self.prompt_proj.training)
-            # print(self.patch_embed.training)
-            # print(self.pos_drop.training)
-            # print(self.blocks.training)
-            # print(self.norm.training)
-            # print(self.fc_norm.training)
-            # print(self.head.training)
-        else:
-            self.prompt_proj.eval()
-            self.patch_embed.eval()
-            self.pos_drop.eval()
-            self.blocks.eval()
-            self.norm.eval()
-            self.fc_norm.eval()
-            self.head.eval()
+    # def train(self, mode):
+    #     if mode:
+    #         self.prompt_proj.train()
+    #         self.patch_embed.eval()
+    #         self.pos_drop.eval()
+    #         self.blocks.eval()
+    #         self.norm.eval()
+    #         self.fc_norm.train()
+    #         self.head.train()
+
+    #         # print("MODE: In train")
+    #         # print(self.prompt_proj.training)
+    #         # print(self.patch_embed.training)
+    #         # print(self.pos_drop.training)
+    #         # print(self.blocks.training)
+    #         # print(self.norm.training)
+    #         # print(self.fc_norm.training)
+    #         # print(self.head.training)
+    #     else:
+    #         self.prompt_proj.eval()
+    #         self.patch_embed.eval()
+    #         self.pos_drop.eval()
+    #         self.blocks.eval()
+    #         self.norm.eval()
+    #         self.fc_norm.eval()
+    #         self.head.eval()
             
-            # print("MODE: In eval")
-            # print(self.prompt_proj.training)
-            # print(self.patch_embed.training)
-            # print(self.pos_drop.training)
-            # print(self.blocks.training)
-            # print(self.norm.training)
-            # print(self.fc_norm.training)
-            # print(self.head.training)
+    #         # print("MODE: In eval")
+    #         # print(self.prompt_proj.training)
+    #         # print(self.patch_embed.training)
+    #         # print(self.pos_drop.training)
+    #         # print(self.blocks.training)
+    #         # print(self.norm.training)
+    #         # print(self.fc_norm.training)
+    #         # print(self.head.training)
 
     def extract(self, x):
         B = x.shape[0]
