@@ -20,7 +20,7 @@ T: 0.5
 p_cutoff: 0.95
 ulb_loss_ratio: 1.0
 ema_p: 0.999
-img_size: 32
+img_size: 224
 crop_ratio: 0.875
 optim: AdamW
 lr: 0.0005
