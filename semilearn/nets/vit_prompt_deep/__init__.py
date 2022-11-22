@@ -1,0 +1,2 @@
+from .vit_prompt_deep import deep_prompted_vit_tiny_patch2_32, deep_prompted_vit_base_patch16_96, deep_prompted_vit_base_patch16_224, deep_prompted_vit_small_patch2_32, deep_prompted_vit_small_patch16_224
+from .vit_prompt_deep import DeepPromptedVisionTransformer
