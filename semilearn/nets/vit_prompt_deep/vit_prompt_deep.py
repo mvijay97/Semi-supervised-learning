@@ -282,7 +282,7 @@ class DeepPromptedVisionTransformer(nn.Module):
 
         for i in range(num_layers):
             if i == 0:
-                hidden_states = self.blocks.layer[i](embedding_output)
+                hidden_states = self.blocks[i](embedding_output)
             else:
                 if i <= self.deep_prompt_embeddings.shape[0]:
                     deep_prompt_emb = self.prompt_proj(
@@ -296,7 +296,7 @@ class DeepPromptedVisionTransformer(nn.Module):
                     ), dim=1)
 
 
-                hidden_states = self.blocks.layer[i](hidden_states)
+                hidden_states = self.blocks[i](hidden_states)
 
         encoded = self.norm(hidden_states)
         return encoded
