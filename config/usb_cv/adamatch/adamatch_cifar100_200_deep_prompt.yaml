@@ -1,8 +1,8 @@
 algorithm: adamatch
 save_dir: ./saved_models/usb_cv/
-save_name: adamatch_cifar100_200_prompt
+save_name: adamatch_cifar100_200_deep_prompt_10_cosine_1e3
 resume: True
-load_path: ./saved_models/usb_cv/adamatch_cifar100_200_prompt/latest_model.pth
+load_path: ./saved_models/usb_cv/adamatch_cifar100_200_deep_prompt_10_cosine_1e3/latest_model.pth
 overwrite: True
 use_tensorboard: True
 epoch: 300
@@ -23,7 +23,7 @@ ema_p: 0.999
 img_size: 224
 crop_ratio: 0.875
 optim: AdamW
-lr: 0.0005
+lr: 0.001
 layer_decay: 0.5
 momentum: 0.9
 weight_decay: 0.0005

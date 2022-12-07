@@ -178,7 +178,7 @@ class DeepPromptedVisionTransformer(nn.Module):
         self.grad_checkpointing = False
 
         # Prompt and prompt projection
-        self.num_prompt_tokens = 150
+        self.num_prompt_tokens = 10
         self.depth = depth
         self.prompt_dim = embed_dim
         self.prompt_proj = nn.Identity() # train

@@ -78,7 +78,7 @@ class AdaMatch(AlgorithmBase):
 
             total_loss = sup_loss + self.lambda_u * unsup_loss
 
-        self.call_hook("param_update", "ParamUpdateHook", loss=total_loss)
+        self.call_hook("param_update_adamatch", "ParamUpdateHook", loss=total_loss)
 
         tb_dict = {}
         tb_dict['train/sup_loss'] = sup_loss.item()

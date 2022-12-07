@@ -13,7 +13,7 @@ import torch.nn.functional as F
 from torch.cuda.amp import autocast, GradScaler
 
 from semilearn.core.hooks import Hook, get_priority, CheckpointHook, TimerHook, LoggingHook, DistSamplerSeedHook, ParamUpdateHook, EvaluationHook, EMAHook
-from semilearn.core.utils import get_dataset, get_data_loader, get_optimizer, get_cosine_schedule_with_warmup, Bn_Controller
+from semilearn.core.utils import get_dataset, get_data_loader, get_optimizer, get_cosine_schedule_with_warmup, Bn_Controller, get_reduce_lr_on_plateau_scheduler, get_cosine_scheduler
 
 
 class AlgorithmBase:
@@ -157,7 +157,7 @@ class AlgorithmBase:
     def set_optimizer(self):
         self.print_fn("Create optimizer and scheduler")
         optimizer = get_optimizer(self.model, self.args.optim, self.args.lr, self.args.momentum, self.args.weight_decay, self.args.layer_decay)
-        scheduler = get_cosine_schedule_with_warmup(optimizer,
+        scheduler = get_cosine_scheduler(optimizer,
                                                     self.num_train_iter,
                                                     num_warmup_steps=self.args.num_warmup_iter)
         return optimizer, scheduler
