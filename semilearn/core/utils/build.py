@@ -193,6 +193,9 @@ def get_optimizer(net, optim_name='SGD', lr=0.1, momentum=0.9, weight_decay=0, l
     elif optim_name == 'AdamW':
         optimizer = torch.optim.AdamW(per_param_args, lr=lr, weight_decay=weight_decay)
 
+    print(f"param group 1: {optimizer.param_groups[0]['lr']}")
+    print(f"param group 2: {optimizer.param_groups[1]['lr']}")
+
     return optimizer
 
 
