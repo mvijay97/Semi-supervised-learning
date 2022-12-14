@@ -15,11 +15,15 @@ import torch.backends.cudnn as cudnn
 import torch.distributed as dist
 import torch.multiprocessing as mp
 
+
 from semilearn.algorithms import get_algorithm, name2alg
 from semilearn.imb_algorithms import get_imb_algorithm
 from semilearn.algorithms.utils import str2bool
 from semilearn.core.utils import get_net_builder, get_logger, get_port, send_model_cuda, count_parameters, over_write_args_from_file, TBLog
 
+logging.basicConfig(filename="/home/ubuntu/11785/mvijay/full_finetune_test.log",
+                    filemode='a',
+                    level=logging.DEBUG)
 
 def get_config():
     parser = argparse.ArgumentParser(description='Semi-Supervised Learning (USB)')

@@ -193,6 +193,9 @@ def get_optimizer(net, optim_name='SGD', lr=0.1, momentum=0.9, weight_decay=0, l
     elif optim_name == 'AdamW':
         optimizer = torch.optim.AdamW(per_param_args, lr=lr, weight_decay=weight_decay)
 
+    print(f"param group 1: {optimizer.param_groups[0]['lr']}")
+    print(f"param group 2: {optimizer.param_groups[1]['lr']}")
+
     return optimizer
 
 
@@ -221,6 +224,33 @@ def get_cosine_schedule_with_warmup(optimizer,
         return _lr
 
     return LambdaLR(optimizer, _lr_lambda, last_epoch)
+
+def get_reduce_lr_on_plateau_scheduler(optimizer,
+                                    num_training_steps,
+                                    num_cycles=7. / 16.,
+                                    num_warmup_steps=0,
+                                    last_epoch=-1):
+    '''
+    Get cosine scheduler (LambdaLR).
+    if warmup is needed, set num_warmup_steps (int) > 0.
+    '''
+    from torch.optim.lr_scheduler import ReduceLROnPlateau
+
+    return ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=3072, min_lr=1e-6)
+
+
+def get_cosine_scheduler(optimizer,
+                                    num_training_steps,
+                                    num_cycles=7. / 16.,
+                                    num_warmup_steps=0,
+                                    last_epoch=-1):
+    '''
+    Get cosine scheduler (LambdaLR).
+    if warmup is needed, set num_warmup_steps (int) > 0.
+    '''
+    from torch.optim.lr_scheduler import CosineAnnealingLR
+
+    return CosineAnnealingLR(optimizer, T_max=307200, eta_min=1e-6, last_epoch=last_epoch, verbose=True)
 
 
 def get_port():
