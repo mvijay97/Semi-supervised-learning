@@ -15,7 +15,7 @@ The corresonding configurations to train these networks with semi-supervised lea
   * Shallow Prompting - ```Semi-supervised-learning/config/usb_cv/adamatch/adamatch_cifar100_200_prompt.yaml```
   * Deep Prompting - ```Semi-supervised-learning/config/usb_cv/adamatch/adamatch_cifar100_200_deep_prompt.yaml```
 * RemixMath
-  * Shallow Prompting - 
+  * Shallow Prompting - ```Semi-supervised-learning/config/usb_cv/remixmatch/remixmatch_cifar100_200_prompt.yaml```
   * Deep Prompting - ```Semi-supervised-learning/config/usb_cv/remixmatch/remixmatch_cifar100_200_deep_prompt.yaml```
 
 In order to train a vision transformer with prompting simply run - 
